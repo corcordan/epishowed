@@ -9,10 +9,9 @@ import { Credit } from '@/types/Credit'
 import { EpisodeCredits } from '@/types/EpisodeCredits'
 import { Season } from '@/types/Season'
 import { Show } from '@/types/Show'
-import { getDayOfYear, getYear } from 'date-fns'
-import { Ephesis } from 'next/font/google'
+import { getYear } from 'date-fns'
 import Image from 'next/image'
-import React, { use, useEffect, useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 
 const backgroundWhite = "#E8E9EB"
 const backgroundTomato = "#F06543"
@@ -28,7 +27,7 @@ const maxBoxHeight = 60
 const minBoxWidth = 50
 const minBoxHeight = 30
 
-const allocator = new ColorAllocator()
+export const dynamic = 'force-dynamic'
 
 const ShowPage = ({ params }: { params: Promise<{ id: number }> }) => {
     const [loading, setLoading] = useState(false)
