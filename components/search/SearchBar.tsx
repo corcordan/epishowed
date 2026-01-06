@@ -76,12 +76,13 @@ const SearchBar = () => {
 						className="w-full rounded-full border border-tomato bg-tomato px-5 py-3 pr-20 text-base shadow-md transition-shadow duration-200 hover:shadow-lg focus:border-white focus:outline-1 text-white"
 						placeholder="Search EpiShowed"
 					/>
-					<div className="absolute right-0 top-0 mr-4 mt-3 flex items-center">
+					{/*
+						<div className="absolute right-0 top-0 mr-4 mt-3 flex items-center">
 						<button
 							type="button"
 							className="mr-3 text-white hover:text-sandy cursor-pointer"
 							onClick={() =>
-								alert('Voice search is unsupported in this demo.\nTry implementing this feature yourself')
+								alert('Voice search is unsupported in this demo.')
 							}
 						>
 							<Mic size={20} />
@@ -90,6 +91,7 @@ const SearchBar = () => {
 							<Search size={20} />
 						</button>
 					</div>
+					*/}
 				</div>
 			</form>
 			{loading && <div className="text-white mb-2 absolute top-20">Loading...</div>}

@@ -1,6 +1,7 @@
 'use client'
 
 import CreditBox from '@/components/CreditBox'
+import Footer from '@/components/footer/Footer'
 import Navbar from '@/components/navbar/Navbar'
 import { TMDB_IMAGE_BASE } from '@/constants'
 import { ColorAllocator } from '@/lib/ColorAllocator'
@@ -405,6 +406,7 @@ const ShowPage = ({ params }: { params: Promise<{ id: number }> }) => {
                     ))}   
                 </svg>
             </div>
+            <Footer />
         </div>
     )
 }
