@@ -3,8 +3,6 @@ import { fetchPeople, fetchSeasons, fetchShow } from '@/utils/fetchUtils'
 import { getYear } from 'date-fns'
 import { notFound } from 'next/navigation'
 
-export const dynamic = "force-dynamic"
-
 export default async function Shows({ params }: { params: Promise<{ id: number }> }) {
 
     const { id } = await params
