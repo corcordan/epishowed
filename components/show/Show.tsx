@@ -23,10 +23,10 @@ type ShowPageProps = {
     widthSVG: number
     marginSize: number
     credits: Credit[]
+    numEps: number
 }
 
-const ShowPage = ({ start, end, showInfo, seasons, boxHeight, boxWidth, heightSVG, widthSVG, marginSize, credits }: ShowPageProps) => {
-    const [numEps, setNumEps] = useState(0)
+const ShowPage = ({ start, end, showInfo, seasons, boxHeight, boxWidth, heightSVG, widthSVG, marginSize, credits, numEps }: ShowPageProps) => {
     const [selectedCreds, setSelectedCreds] = useState<Map<number, number[]>>(new Map())
     const [hoverCredit, setHoverCredit] = useState<number | null>(null)
 

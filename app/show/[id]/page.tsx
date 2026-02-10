@@ -1,5 +1,6 @@
 import ShowPage from '@/components/show/Show'
 import { fetchPeople, fetchSeasons, fetchShow } from '@/utils/fetchUtils'
+import { getMostEpisodes } from '@/utils/showUtils'
 import { getYear } from 'date-fns'
 import { notFound } from 'next/navigation'
 
@@ -32,6 +33,8 @@ export default async function Shows({ params }: { params: Promise<{ id: number }
         notFound()
     }
 
+    const numEps = getMostEpisodes(seasonInfo)
+
     return (
         <ShowPage 
             start={start}
@@ -44,6 +47,7 @@ export default async function Shows({ params }: { params: Promise<{ id: number }
             widthSVG={widthSVG}
             marginSize={marginSize}
             credits={peopleInfo}
+            numEps={numEps}
         />
     )
 }
