@@ -1,6 +1,6 @@
 import ShowPage from '@/components/show/Show'
 import { fetchPeople, fetchSeasons, fetchShow } from '@/utils/fetchUtils'
-import { getMostEpisodes } from '@/utils/showUtils'
+import { getMostEpisodes, sortCredits } from '@/utils/showUtils'
 import { getYear } from 'date-fns'
 import { notFound } from 'next/navigation'
 
@@ -27,6 +27,7 @@ export default async function Shows({ params }: { params: Promise<{ id: number }
     const { seasonInfo, boxHeight, boxWidth, heightSVG, widthSVG, marginSize } = seasonPromise
 
     const peopleInfo = await fetchPeople(seasonInfo, id)
+    const credits = sortCredits(peopleInfo || [])
 
     if (!peopleInfo) {
         console.error("fetchPeople returned undefined for ID", id)
@@ -46,7 +47,7 @@ export default async function Shows({ params }: { params: Promise<{ id: number }
             heightSVG={heightSVG}
             widthSVG={widthSVG}
             marginSize={marginSize}
-            credits={peopleInfo}
+            credits={credits}
             numEps={numEps}
         />
     )

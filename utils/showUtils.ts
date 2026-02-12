@@ -1,3 +1,4 @@
+import { Credit } from "@/types/Credit"
 import { Season } from "@/types/Season"
 
 export const getOrder = (hoverCredit: number | null, selectedCreds: Map<number, number[]>) => {
@@ -13,4 +14,10 @@ export const getMostEpisodes = (seasons: Season[]) => {
         }
     })
     return maxEps
+}
+
+export const sortCredits = (credits: Credit[]) => {
+    return credits.sort((a, b) => {
+        return b.episodes.length - a.episodes.length
+    })
 }

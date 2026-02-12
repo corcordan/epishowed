@@ -61,7 +61,7 @@ const ShowPage = ({ start, end, showInfo, seasons, boxHeight, boxWidth, heightSV
                             {showInfo.genres.map(g => (
                                 <div 
                                     key={g.id}
-                                    className="bg-sandy text-white rounded-sm py-2 px-4 shadow-lg hover:scale-105"
+                                    className="bg-sandy text-white rounded-sm py-2 px-4 shadow-lg hover:scale-105 cursor-default"
                                 >
                                     {g.name}
                                 </div>

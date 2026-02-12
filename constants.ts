@@ -1,5 +1,6 @@
 export const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p"
 export const NO_SHOWS = 5
+export const PAGE_SHOWS = 20
 export const SVG_WIDTH = 1000
 export const SVG_HEIGHT = 750
 export const MARGIN = 10

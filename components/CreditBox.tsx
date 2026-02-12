@@ -71,7 +71,7 @@ const CreditBox = ({ credit, selectedCreds, setSelectedCreds, hoverCredit, setHo
                     ? allocator.getAssignedColors().get(credit.id)
                     : "transparent"
             }}
-            className={`border-2 rounded-2xl p-2 flex flex-col justify-center items-center mx-2`}
+            className={`border-2 rounded-2xl p-2 flex flex-col justify-between items-center mx-2`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             type="button"
@@ -85,7 +85,9 @@ const CreditBox = ({ credit, selectedCreds, setSelectedCreds, hoverCredit, setHo
                     height={60}
                 />
             ) : (
-                <User color="#F06543" />
+                <div className="pt-4">
+                    <User color="#F06543" />
+                </div>
             )}
             <p className="text-tomato whitespace-nowrap">{credit.name}</p>
         </button>
