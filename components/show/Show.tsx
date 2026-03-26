@@ -4,7 +4,7 @@ import Footer from '../footer/Footer'
 import Navbar from '../navbar/Navbar'
 import Image from 'next/image'
 import CreditBox from '../CreditBox'
-import { useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Show } from '@/types/Show'
 import { Season } from '@/types/Season'
 import { Credit } from '@/types/Credit'
@@ -30,13 +30,7 @@ const ShowPage = ({ start, end, showInfo, seasons, boxHeight, boxWidth, heightSV
     const [selectedCreds, setSelectedCreds] = useState<Map<number, number[]>>(new Map())
     const [hoverCredit, setHoverCredit] = useState<number | null>(null)
 
-    const allocatorRef = useRef<ColorAllocator | null>(null)
-    
-        if (!allocatorRef.current) {
-            allocatorRef.current = new ColorAllocator()
-        }
-    
-        const allocator = allocatorRef.current
+    const allocator = useMemo(() => new ColorAllocator(), [])
 
     if (!showInfo) return <div>No show</div>
 

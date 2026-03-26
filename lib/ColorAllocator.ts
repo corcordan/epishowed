@@ -6,7 +6,7 @@ export class ColorAllocator {
     private priorityToColor = new Map<number, string>();    // priority to color
 
     constructor() {
-        const colors = ["#F06543", "#FFA500", "#6F8F4E", "#3E7C7B", "#4C6EF5"];
+        const colors = ["#F06543", "#F09D51", "#6B9E8A", "#A0522D", "#7B8FA6"];
         colors.forEach((_, index) => {
             this.availableColors.push(index)
             this.priorityToColor.set(index, colors[index]);

@@ -3,57 +3,56 @@
 import { NO_SHOWS, TMDB_IMAGE_BASE } from '@/constants'
 import { ShowLite } from '@/types/ShowLite'
 import { ShowSearch } from '@/types/ShowSearch'
-import { FileExclamationPoint, Mic, Search } from 'lucide-react'
+import { FileExclamationPoint, Search } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+const debounce = (
+	func: (term: string) => void,
+	delay: number
+): ((term: string) => void) => {
+	let timeoutID: ReturnType<typeof setTimeout>
+
+	return (term: string) => {
+		clearTimeout(timeoutID)
+		timeoutID = setTimeout(() => func(term), delay)
+	}
+}
 
 const SearchBar = () => {
 	const [searchTerm, setSearchTerm] = useState("")
 	const [searchResults, setSearchResults] = useState<ShowLite[]>([])
 	const [loading, setLoading] = useState(false)
 
-	const debounce = (
-		func: (term: string) => void,
-		delay: number
-	): ((term: string) => void) => {
-		let timeoutID: ReturnType<typeof setTimeout>
-
-		return (term: string) => {
-			clearTimeout(timeoutID)
-			timeoutID = setTimeout(() => func(term), delay)
+	const fetchResults = useCallback(async (term: string) => {
+		if (term.trim() === "") {
+			setSearchResults([])
+			return
 		}
-	}
 
-	const handleSearch = useCallback(
-		debounce(async (term: string) => {
-			if (term.trim() === "") {
-				setSearchResults([])
-				return;
-			}
+		setLoading(true)
 
-			setLoading(true)
+		try {
+			const res = await fetch(`/api/search?q=${term}`)
+			if (!res.ok) throw new Error("Failed to fetch search results")
+			const data: ShowSearch = await res.json()
 
-			try {
-				const res = await fetch(`/api/search?q=${term}`)
-				if (!res.ok) throw new Error("Failed to fetch search results")
-				const data: ShowSearch = await res.json()
+			const results: ShowLite[] = (data.results ?? []).map(item => ({
+				id: item.id,
+				name: item.name || "Untitled",
+				poster_path: item.poster_path
+			})).slice(0, NO_SHOWS)
 
-				const results: ShowLite[] = (data.results ?? []).map(item => ({
-					id: item.id,
-					name: item.name || "Untitled",
-					poster_path: item.poster_path
-				})).slice(0, NO_SHOWS)
+			setSearchResults(results)
+		} catch (err) {
+			console.error("Search Error", err)
+		}
+		setLoading(false)
+	}, [])
 
-				setSearchResults(results)
-			} catch (err) {
-				console.error("Search Error", err)
-			}
-			setLoading(false)
-		}, 300),
-		[],
-	)
+	const handleSearch = useMemo(() => debounce(fetchResults, 300), [fetchResults])
 
 	useEffect(() => {
 		handleSearch(searchTerm)

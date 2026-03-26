@@ -5,7 +5,7 @@ import { ColorAllocator } from '@/lib/ColorAllocator'
 import { Credit } from '@/types/Credit'
 import { User } from 'lucide-react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React from 'react'
 
 type CreditBoxProps = {
     credit: Credit
@@ -17,57 +17,44 @@ type CreditBoxProps = {
 }
 
 const CreditBox = ({ credit, selectedCreds, setSelectedCreds, hoverCredit, setHoverCredit, allocator }: CreditBoxProps) => {
-    const [clicked, setClicked] = useState(false)
     const isSelected = selectedCreds.has(credit.id)
-    const isHoveredPrev = hoverCredit === credit.id
-    const hoverAllowed = selectedCreds.size === 0 || isHoveredPrev
+    const isHovered = hoverCredit === credit.id
 
     const handleMouseEnter = () => {
-        if (!hoverAllowed) return
-        if (isSelected) return
-        setHoverCredit(credit.id)
-        setSelectedCreds(new Map([[credit.id, credit.episodes]]))
+        if (selectedCreds.size > 0) return
         allocator.assign(credit.id)
+        setHoverCredit(credit.id)
     }
 
     const handleMouseLeave = () => {
-        if (!hoverAllowed) return
-        if (hoverCredit === credit.id) setHoverCredit(null)
-        setSelectedCreds(new Map())
+        if (isSelected) return
         allocator.release(credit.id)
+        setHoverCredit(null)
     }
 
     const handleClick = () => {
-        setSelectedCreds(prev => {
-            const newMap = new Map(prev ?? [])
-
-            if (newMap.has(credit.id) && clicked) {
+        if (isSelected) {
+            setSelectedCreds(prev => {
+                const newMap = new Map(prev)
                 newMap.delete(credit.id)
-                allocator.release(credit.id)
-            }
-            else if (!newMap.has(credit.id)) {
-                if (newMap.size < 5) {
-                    newMap.set(credit.id, [...credit.episodes])
-                    allocator.assign(credit.id)
-                }
-                else {
-                    // optionally: could provide UI feedback; for now we silently ignore additional clicks
-                }
-            }
-
-            return newMap
-        })
-        if (hoverCredit === credit.id) {
+                return newMap
+            })
+            allocator.release(credit.id)
+        } else if (selectedCreds.size < 5) {
+            allocator.assign(credit.id)
+            setSelectedCreds(prev => {
+                const newMap = new Map(prev)
+                newMap.set(credit.id, [...credit.episodes])
+                return newMap
+            })
             setHoverCredit(null)
         }
-        setClicked(!clicked)
     }
 
     return (
         <button
             style={{
-                borderColor:
-                (isSelected || isHoveredPrev)
+                borderColor: (isSelected || isHovered)
                     ? allocator.getAssignedColors().get(credit.id)
                     : "transparent"
             }}
@@ -78,7 +65,7 @@ const CreditBox = ({ credit, selectedCreds, setSelectedCreds, hoverCredit, setHo
             onClick={handleClick}
         >
             {credit.profile_path ? (
-                <Image 
+                <Image
                     src={`${TMDB_IMAGE_BASE}/w45${credit.profile_path}`}
                     alt={`Profile picture for ${credit.name}`}
                     width={40}
